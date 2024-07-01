@@ -1,5 +1,5 @@
 // services/employeeService.js
-const Employee = require('../models/employee');
+const Employee = require('../models/vehicle');
 
 exports.getAll = async (req, res) => {
     try {
