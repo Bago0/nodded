@@ -1,21 +1,18 @@
+// models/Vehicle.js
 const mongoose = require('mongoose');
 
-const employeeSchema = new mongoose.Schema({
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    pid: { type: String, required: true, unique: true },
-    dateOfBirth: { type: Date, required: true },
-    position: { type: String, required: true },
-    salary: { type: Number, required: true }
-},{
-    collection: 'employees',
-    timestamps: true,
-    read: 'nearest',
-    writeConcern: {
-        w: 'majority',
-        j: true,
-        wtimeoutMS: 30000
-    }
+const serviceDetailSchema = new mongoose.Schema({
+    serviceName: { type: String, required: true },
+    serviceDate: { type: Date, required: true }
 });
 
-module.exports = mongoose.model('Employee', employeeSchema);
+const vehicleSchema = new mongoose.Schema({
+    licensePlate: { type: String, required: true, unique: true },
+    vinCode: { type: String, required: true, unique: true },
+    color: { type: String, required: true },
+    make: { type: String, required: true },
+    model: { type: String, required: true },
+    serviceDetails: [serviceDetailSchema]
+});
+
+module.exports = mongoose.model('Vehicle', vehicleSchema);
