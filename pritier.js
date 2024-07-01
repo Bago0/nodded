@@ -1,122 +1,192 @@
-. Describe what is Promise in JS?
-A Promise in JavaScript is an object that represents the eventual completion (or failure) of an asynchronous operation and its resulting value. It is used for handling asynchronous operations in a more synchronous-like manner, providing a cleaner and more manageable way to handle callbacks. A Promise can be in one of three states:
+1. 
+არარელაციური (NoSQL) მონაცემთა ბაზის დადებითი მხარეები მოიცავს:
 
-Pending: Initial state, neither fulfilled nor rejected.
-Fulfilled: Operation completed successfully.
-Rejected: Operation failed.
-2. Describe closure event in JS?
-A closure in JavaScript is a function that remembers the environment in which it was created. It has access to variables from its own scope, the outer function's scope, and the global scope. Closures are often used to create private variables or functions, as they allow a function to have access to the parent scope even after the parent function has closed.
+მასშტაბურობა: არარელაციური ბაზები ხშირად მხარს უჭერენ ჰორიზონტალურ მასშტაბირებას, რაც იმას ნიშნავს, რომ შესაძლებელია მონაცემების შიდა ჰორიზონტალურად გაფართოება სხვადასხვა სერვერზე. ეს უზრუნველყოფს მონაცემთა ბაზის მაღალი დატვირთვისა და დიდი მოცულობების მხარდაჭერას.
 
-3. Write the function which checks if two strings are anagrams.
-javascript
-function areAnagrams(str1, str2) {
-    if (str1.length !== str2.length) return false;
+მოქნილობა: NoSQL ბაზები ხშირად იძლევა ნახევრადსტრუქტურირებულ ან სრულად არასტრიქტულ მონაცემთა მოდელირებას. ეს ნიშნავს, რომ შეგიძლიათ შეინახოთ განსხვავებული სტრუქტურის მონაცემები ერთავე კოლექციაში ან ტაბლაში, რაც ადვილია სხვადასხვა ტიპის მონაცემების მართვისთვის და სწრაფი ცვლილებების შეტანისთვის.
+
+ეს ორი უპირატესობა NoSQL მონაცემთა ბაზებს ხელსაყრელს ხდის მასშტაბურ და რთული მონაცემთა მართვის სისტემებისთვის, სადაც საჭიროა მონაცემების სწრაფად და ეფექტურად დამუშავება.
+
+2. 
+Node.js-ის `event loop` არის მექანიზმი, რომელიც უზრუნველყოფს ნებაყოფლობითი და არასინქრონული კოდის შესრულებას. `event loop` მუშაობს შემდეგი ეტაპებით:
+
+1. **Timers**: ამ ეტაპზე ხორციელდება დროის ფუნქციები, როგორიცაა `setTimeout()` და `setInterval()`, რომელთა შესრულების დრო გასულია.
+
+2. **Pending Callbacks**: აქ ხორციელდება I/O ოპერაციების კოლბექები, რომლებსაც Kernel უშუალოდ არ ასრულებს. ეს კოლბექები, მაგალითად, მოიცავს TCP შეცდომებს.
+
+3. **Idle, Prepare**: ეს შიდა ეტაპებია, რომლებიც გამოიყენება Node.js-ის შიდა ოპერაციებისთვის. ამ ეტაპზე, სისტემა ამზადებს ივენთებს და ასინქრონულ ოპერაციებს.
+
+4. **Poll**: `Poll` ეტაპზე ხდება ახალი I/O მოვლენების გამოკითხვა, შესაბამისად მათი კოლბექების შესრულება. თუ I/O ივენთები არ არის, ეს ეტაპი შეიძლება ბლოკირებული დარჩეს ახალ მოვლენებზე მოლოდინით.
+
+5. **Check**: ამ ეტაპზე ასინქრონული ოპერაციების კოლბექები, როგორიცაა `setImmediate()`, შესრულდება.
+
+6. **Close Callbacks**: აქ ხორციელდება ივენთების კოლბექები, რომლებსაც უნდა დახურონ რაიმე რესურსი, მაგალითად, `socket.on('close', ...)`.
+
+`event loop` არის ცენტრალური ელემენტი Node.js-ის ასინქრონული შესრულების მოდელში, რომელიც უზრუნველყოფს მაღალი ეფექტურობის და რეაგირების სიმძლავრის კოდების შესრულებას.
+
+3. 
+function countWords(text) {
+    // Remove leading/trailing spaces and split the text by spaces
+    const words = text.trim().split(/\s+/);
     
-    let sortedStr1 = str1.split('').sort().join('');
-    let sortedStr2 = str2.split('').sort().join('');
+    // Filter out any empty strings resulting from multiple spaces
+    const filteredWords = words.filter(word => word.length > 0);
     
-    return sortedStr1 === sortedStr2;
-}
+    // Return the length of the filtered array
+    return filteredWords.length;
+  }
+  
+  // Example usage
+  const text = "This is an example text with several words.";
+  console.log(countWords(text)); // Output: 7
+  
 
-// Example usage:
-console.log(areAnagrams('listen', 'silent')); // true
-console.log(areAnagrams('hello', 'world'));   // false
-4. What is the output of the following code?
-javascript
-Copy code
-const b = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  ამ კოდის შედეგის გასაგებად საჭიროა გავითვალისწინოთ JavaScript-ის ასინქრონული ბუნება და `event loop`-ის მუშაობა. მოდით ეტაპობრივად განვიხილოთ რა მოხდება:
 
-for (let i = 0; i < 10; i++) {
-  setTimeout(() => console.log(b[i]), 1000);
-}
+1. `(function() { ... })();` ქმნის და მაშინვე იძახებს ფუნქციას (IIFE - Immediately Invoked Function Expression).
 
-for (var i = 0; i < 10; i++) {
-  setTimeout(() => console.log(b[i]), 1000);
-}
-Output:
+2. `console.log(1);` - ეს კოდი შესრულდება მაშინვე და კონსოლში დაიბეჭდება `1`.
 
-javascript
-Copy code
+3. `setTimeout(function(){console.log(2)}, 1000);` - ეს კოდი ათავსებს ფუნქციას `console.log(2)` შესრულების რიგში, რომელიც შესრულდება 1000 მილიწამში (1 წამში).
+
+4. `setTimeout(function(){console.log(3)}, 0);` - ეს კოდი ათავსებს ფუნქციას `console.log(3)` შესრულების რიგში, რომელიც შესრულდება რაც შეიძლება მალე, როცა `event loop`-ი თავისუფალი იქნება.
+
+5. `console.log(4);` - ეს კოდი შესრულდება მაშინვე და კონსოლში დაიბეჭდება `4`.
+
+მოდით შევაჯამოთ შედეგები:
+
+1. IIFE ფუნქცია მაშინვე იძახება და ბეჭდავს `1`.
+2. `console.log(4)` შესრულდება მაშინვე და ბეჭდავს `4`.
+3. შემდეგ, რაც `event loop`-ი მთავრდება და ივენთები იწყებენ შესრულებას, `setTimeout`-ით მოთავსებული 0 მილიწამიანი ფუნქცია ასრულებს `console.log(3)`, რაც ბეჭდავს `3`.
+4. ბოლოს, 1 წამში `setTimeout`-ით მოთავსებული 1000 მილიწამიანი ფუნქცია ასრულებს `console.log(2)`, რაც ბეჭდავს `2`.
+
+შედეგად, ეკრანზე დაიბეჭდება შემდეგი:
+
+```
 1
-2
-3
 4
-5
-6
-7
-8
-9
-10
-undefined
-undefined
-undefined
-undefined
-undefined
-undefined
-undefined
-undefined
-undefined
-undefined
-Explanation:
+3
+2
+```
 
-The let keyword creates a block-scoped variable, so each iteration of the first loop captures its own value of i. Therefore, it logs the elements of the array b correctly.
-The var keyword creates a function-scoped variable, so all the timeouts created in the second loop refer to the same variable i, which ends up being 10 after the loop. Since b[10] is undefined, it logs undefined ten times.
-5. What will the code below output to the console and why?
-javascript
-Copy code
-var myObject = {
-    foo: "bar",
-    func: function() {
-        var self = this;
-        console.log("outer func:  this.foo = " + this.foo);
-        console.log("outer func:  self.foo = " + self.foo);
-        (function() {
-            console.log("inner func:  this.foo = " + this.foo);
-            console.log("inner func:  self.foo = " + self.foo);
-         }());
-       }
- };
-myObject.func();
-Output:
 
-kotlin
-Copy code
-outer func:  this.foo = bar
-outer func:  self.foo = bar
-inner func:  this.foo = undefined
-inner func:  self.foo = bar
-Explanation:
 
-this in the func method refers to myObject, so this.foo and self.foo are both "bar" in the outer function.
-Inside the inner function, this refers to the global object (or undefined in strict mode), not myObject. Therefore, this.foo is undefined and self.foo is still "bar".
-6. Write a JavaScript function that takes an array of URLs and downloads the contents of each URL in parallel using Promises.
-javascript
-Copy code
-function fetchUrls(urls) {
-    const fetchPromises = urls.map(url => fetch(url).then(response => response.text()));
-    return Promise.all(fetchPromises);
+5.
+არსებული კოდის შედეგი:
+
+1. კოდი ქმნის სამ ღილაკს (`button`) და თითოეულზე ამატებს ტექსტს `Button 0`, `Button 1`, `Button 2`.
+2. თითოეულ ღილაკზე ამატებს `click` ივენთის ლისენერს, რომელიც უნდა დაბეჭდოს `i` მნიშვნელობა კონსოლში.
+3. `i` ცვლადი არის `var`-ით გამოცხადებული, რაც ნიშნავს რომ ის ფუნქციის დონეზე ჩანს (არა ბლოკის დონეზე).
+
+როცა ღილაკს დააჭერთ, ყველა ღილაკი დაბეჭდავს `3`. ეს იმიტომ ხდება, რომ `i` ცვლადი ფუნქციის დონეზე ჩანს და ბოლო მნიშვნელობა, რომელიც მას აქვს ლუპის დასრულების შემდეგ, არის `3`.
+
+ამის გასასწორებლად, საჭიროა დავიცვათ `i` ცვლადის მნიშვნელობა თითოეული ღილაკისთვის. ამისთვის შეგვიძლია გამოვიყენოთ `let` ან `closure`:
+
+### გამოსწორებული ვერსია `let`-ით:
+
+```javascript
+for (let i = 0; i < 3; i++) { // გამოიყენეთ let, რათა i ბლოკის დონეზე იყოს
+  var btn = document.createElement('button');
+  btn.appendChild(document.createTextNode('Button ' + i));
+  btn.addEventListener('click', function(){ console.log(i); });
+  document.body.appendChild(btn);
+}
+```
+
+### გამოსწორებული ვერსია `closure`-ით:
+
+```javascript
+for (var i = 0; i < 3; i++) {
+  (function(i) {
+    var btn = document.createElement('button');
+    btn.appendChild(document.createTextNode('Button ' + i));
+    btn.addEventListener('click', function(){ console.log(i); });
+    document.body.appendChild(btn);
+  })(i); // IIFE რომ დავიცვათ i მნიშვნელობა
+}
+```
+
+ორივე შემთხვევაში, კოდი შექმნის სამ ღილაკს, რომლებსაც აქვთ შესაბამისი ტექსტები (`Button 0`, `Button 1`, `Button 2`), და თითოეულ ღილაკზე დაჭერისას კონსოლში დაიბეჭდება შესაბამისი `i` მნიშვნელობა (0, 1, ან 2).
+
+6.
+რა თქმა უნდა! მოდით შევქმნათ პროგრამა, რომელიც ასინქრონული ოპერაციების თანმიმდევრულად შესრულებას მოახდენს `async/await`-ის გამოყენებით. ეს ოპერაციები შეიძლება წარმოადგენდეს, მაგალითად, ფაილების ჩატვირთვას, მონაცემების მიღებას სერვერიდან და ა.შ.
+
+### ფუნქცია ასინქრონული ოპერაციებისათვის
+
+```javascript
+// ფიქტიური ასინქრონული ოპერაცია, რომელიც იღებს სახელსა და დაგვიანების დროს (მილიწამებში)
+function asyncOperation(name, delay) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log(`Operation ${name} completed after ${delay} ms`);
+      resolve(name);
+    }, delay);
+  });
 }
 
-// Example usage:
-fetchUrls(['https://example.com', 'https://example.org'])
-    .then(contents => {
-        contents.forEach(content => console.log(content));
-    })
-    .catch(error => console.error('Error fetching URLs:', error));
-7. MongoDB queries
-Find the restaurants that achieved a score more than 80 but less than 100.
-javascript
-Copy code
+async function performSequentialOperations() {
+  try {
+    // პირველი ოპერაციის შესრულება და მოლოდინი
+    const result1 = await asyncOperation('A', 1000);
+    console.log(`Result of operation ${result1}`);
+    
+    // მეორე ოპერაციის შესრულება და მოლოდინი
+    const result2 = await asyncOperation('B', 2000);
+    console.log(`Result of operation ${result2}`);
+    
+    // მესამე ოპერაციის შესრულება და მოლოდინი
+    const result3 = await asyncOperation('C', 1500);
+    console.log(`Result of operation ${result3}`);
+  } catch (error) {
+    console.error('An error occurred:', error);
+  }
+}
+
+// პროგრამის გაშვება
+performSequentialOperations();
+```
+
+### როგორ მუშაობს კოდი:
+
+1. **asyncOperation**: ეს არის ფიქტიური ასინქრონული ფუნქცია, რომელიც იღებს `name` და `delay` პარამეტრებს. იგი აბრუნებს `Promise`, რომელიც ასრულებს ოპერაციას მოცემული დროის შემდეგ `setTimeout`-ის გამოყენებით.
+2. **performSequentialOperations**: ეს არის ასინქრონული ფუნქცია, რომელიც თანმიმდევრულად ახორციელებს `asyncOperation`-ებს `await`-ის გამოყენებით. ის მოიცავს:
+   - პირველი ოპერაციის შესრულებას (1 წამი დაგვიანებით)
+   - მეორე ოპერაციის შესრულებას (2 წამი დაგვიანებით)
+   - მესამე ოპერაციის შესრულებას (1.5 წამი დაგვიანებით)
+3. **try/catch**: ეს არის შეცდომების მართვის მექანიზმი, რომელიც იჭერს ნებისმიერ პოტენციურ შეცდომას ასინქრონულ ოპერაციებში.
+
+### შედეგი:
+
+კონსოლში დაიბეჭდება:
+
+```
+Operation A completed after 1000 ms
+Result of operation A
+Operation B completed after 2000 ms
+Result of operation B
+Operation C completed after 1500 ms
+Result of operation C
+```
+
+ეს მაგალითი აჩვენებს, თუ როგორ შეგვიძლია `async/await`-ის გამოყენებით ვმართოთ ასინქრონული ოპერაციების თანმიმდევრობითი შესრულება.
+
+7.
 db.restaurants.find({
-    "grades.score": { $gt: 80, $lt: 100 }
-});
-Find the restaurants that have at least one grade with a score of less than 5 and that are located in the borough of Manhattan or Brooklyn, and their cuisine is not American.
-javascript
-Copy code
+    cuisine: { $ne: "American" }, // სამზარეულო არ არის "ამერიკული"
+    borough: { $ne: "Brooklyn" }, // დაბა არ არის "ბრუკლინი"
+    "grades.grade": "A" // არის მინიჭებული "A" ქულა
+  }).sort({ cuisine: -1 }); // დალაგება სამზარეულოს მიხედვით კლებადობით
+  
+8.
 db.restaurants.find({
-    $and: [
-        { "grades.score": { $lt: 5 } },
-        { "borough": { $in: ["Manhattan", "Brooklyn"] } },
-        { "cuisine": { $ne: "American" } }
-    ]
-});
+    $or: [
+      { "grades.score": 2 },
+      { "grades.score": 6 }
+    ],
+    $or: [
+      { borough: "Manhattan" },
+      { borough: "Brooklyn" }
+    ],
+    cuisine: { $ne: "American" }
+  })
+  
